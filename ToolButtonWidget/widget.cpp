@@ -36,28 +36,27 @@ void Widget::paintEvent(QPaintEvent *event)
    }
    else if(brushStyle == WiderSpacePointStyle)
    {
-       qDebug()<<"较宽间距的点状样式";
-
+       //qDebug()<<"较宽间距的点状样式";
        drawPointBrushStyle(painter,this,10,brushPointColor);
    }
    else if(brushStyle == MiddleSpacePointStyle)
    {
-       qDebug()<<"中等间距的点状样式";
+       //qDebug()<<"中等间距的点状样式";
        drawPointBrushStyle(painter,this,8,brushPointColor);
    }
    else if(brushStyle == NarrowSpacePointStyle)
    {
-       qDebug()<<"窄间距的点状样式";
+       //qDebug()<<"窄间距的点状样式";
        drawPointBrushStyle(painter,this,6,brushPointColor);
    }
    else if(brushStyle == NarrowerSpacePointStyle)
    {
-       qDebug()<<"较窄间距的点状样式";
+       //qDebug()<<"较窄间距的点状样式";
        drawPointBrushStyle(painter,this,4,brushPointColor);
    }
    else if(brushStyle == TranslucentWiderSpacePointStyle)
    {
-       qDebug()<<"半透明较宽间距的点状样式";
+       //qDebug()<<"半透明较宽间距的点状样式";
        QColor rgba = QColor(brushColor).toRgb();
        rgba.setAlphaF(1);
        brushPointColor = rgba;
@@ -67,18 +66,17 @@ void Widget::paintEvent(QPaintEvent *event)
    }
    else if(brushStyle == TranslucentMiddleSpacePointStyle)
    {
-       qDebug()<<"半透明中等间距的点状样式";
+       //qDebug()<<"半透明中等间距的点状样式";
        QColor rgba = QColor(brushColor).toRgb();
        rgba.setAlphaF(1);
        brushPointColor = rgba;
        brushColor.setAlphaF(0.5);
-       qDebug()<<"the point color is： "<<brushPointColor.name();
        drawPointBrushStyle(painter,this,8,brushPointColor);
        brushPointColor = Qt::white;
    }
    else if(brushStyle == TranslucentNarrowSpacePointStyle)
    {
-       qDebug()<<"半透明较窄间距的点状样式";
+       //qDebug()<<"半透明较窄间距的点状样式";
        QColor rgba = QColor(brushColor).toRgb();
        rgba.setAlphaF(1);
        brushPointColor = rgba;
@@ -88,7 +86,7 @@ void Widget::paintEvent(QPaintEvent *event)
    }
    else if(brushStyle == TranslucentNarrowerSpacePointStyle)
    {
-       qDebug()<<"半透明较窄间距的点状样式";
+       //qDebug()<<"半透明较窄间距的点状样式";
        QColor rgba = QColor(brushColor).toRgb();
        rgba.setAlphaF(1);
        brushPointColor = rgba;
@@ -98,7 +96,7 @@ void Widget::paintEvent(QPaintEvent *event)
    }
    else if(brushStyle == AlternatePixelPoints)
    {
-       qDebug()<<"交替式像素点";
+       //qDebug()<<"交替式像素点";
        drawAlternatePointStyle(painter,this,1,brushPointColor);
    }
    else if(brushStyle == Alternate3PixelPoints)
@@ -107,93 +105,93 @@ void Widget::paintEvent(QPaintEvent *event)
    }
    else if(brushStyle == TranslucentAlternatePixelPoints)
    {
-       qDebug()<<"像素点颜色和图形背景颜色进行交换";
+       //qDebug()<<"像素点颜色和图形背景颜色进行交换";
        drawAlternatePointStyle(painter,this,1,brushPointColor);
    }
    else if(brushStyle == TranslucentAlternate3PixelPoints)
    {
-       qDebug()<<"像素点颜色和图形背景颜色进行交换";
+       //qDebug()<<"像素点颜色和图形背景颜色进行交换";
        drawAlternatePointStyle(painter,this,3,brushPointColor);
    }
    else if(brushStyle == CrossPixelPoint)
    {
-       qDebug()<<"十字形样式";
+       //qDebug()<<"十字形样式";
        drawCrossPixpelPointStyle(painter,this,3,brushPointColor);
    }
    else if(brushStyle == TanslucentCrossPixpelPoint)
    {
-       qDebug()<<"颜色交换的十字样式";
+       //qDebug()<<"颜色交换的十字样式";
        drawCrossPixpelPointStyle2(painter,this,3,brushPointColor);
    }
    else if(brushStyle == FineObliquLeftLine)
    {
-       qDebug()<<"细等宽度的从左开始的斜线";
+       //qDebug()<<"细等宽度的从左开始的斜线";
        drawLinesSinceRightToLeft(painter,this,8,1,brushPointColor);
    }
    else if(brushStyle == FineObliquRightLine)
    {
-       qDebug()<<"细等宽度的从右开始的斜线";
+       //qDebug()<<"细等宽度的从右开始的斜线";
        drawLineSinceLeftToRight(painter,this,8,1,brushPointColor);
    }
    else if(brushStyle == MiddleObliquLeftLine)
    {
-      qDebug()<<"中等宽度的从左开始的斜线";
+      //qDebug()<<"中等宽度的从左开始的斜线";
       drawLinesSinceRightToLeft(painter,this,8,2,brushPointColor);
    }
    else if(brushStyle == MiddleObliquRightLine)
    {
-       qDebug()<<"中等宽度的从右开始的斜线";
+       //qDebug()<<"中等宽度的从右开始的斜线";
        drawLineSinceLeftToRight(painter,this,8,2,brushPointColor);
    }
    else if(brushStyle == WiderObliquLeftLine)
    {
-       qDebug()<<"从左上角开始的较宽的斜线";
+       //qDebug()<<"从左上角开始的较宽的斜线";
        drawLineSinceLeftToRight(painter,this,8,3,brushPointColor);
    }
    else if(brushStyle == WiderObliquRightLine)
    {
-      qDebug()<<"从右上角开始的较宽的斜线";
+      //qDebug()<<"从右上角开始的较宽的斜线";
       drawLinesSinceRightToLeft(painter,this,8,3,brushPointColor);
    }
    else if(brushStyle == VerticalWiderLine)
    {
-       qDebug()<<"竖直方向上间距较宽的水平线";
+       //qDebug()<<"竖直方向上间距较宽的水平线";
        drawVeritcalLine(painter,10,2,this,brushPointColor);
    }
    else if(brushStyle == HorizonWiderLine)
    {
-       qDebug()<<"水平方向上间距较宽的水平线";
+       //qDebug()<<"水平方向上间距较宽的水平线";
        drawHorizonTalLine(painter,8,2,this,brushPointColor);
    }
    else if(brushStyle == VerticalFineLine )
    {
-       qDebug()<<"竖直方向上细线条的水平线";
+       //qDebug()<<"竖直方向上细线条的水平线";
        drawVeritcalLine(painter,8,1,this,brushPointColor);
    }
    else if(brushStyle == HorizonFineLine )
    {
-       qDebug()<<"水平方向上细线条的水平线";
+       //qDebug()<<"水平方向上细线条的水平线";
        drawHorizonTalLine(painter,8,1,this,brushPointColor);
    }
    else if(brushStyle == VerticalBlodLine)
    {
-       qDebug()<<"竖直方向上粗线条的竖直线";
+      // qDebug()<<"竖直方向上粗线条的竖直线";
        drawVeritcalLine(painter,8,3,this,brushPointColor);
    }
    else if(brushStyle == HorizonBlodLine)
    {
-       qDebug()<<"水平方向上粗线条的水平线";
+       //qDebug()<<"水平方向上粗线条的水平线";
        drawHorizonTalLine(painter,8,3,this,brushPointColor);
    }
    else if(brushStyle == SymmetricWallBrush)
    {
-       qDebug()<<" 绘制对角的墙砖";
+       //qDebug()<<" 绘制对角的墙砖";
        int space = 9;
        drawWallBrush(painter,this,space,1,brushPointColor);
    }
    else if(brushStyle == HorizonWallBrush )
    {
-       qDebug()<<"绘制水平方向上的墙砖";
+       //qDebug()<<"绘制水平方向上的墙砖";
        drawHorizonWallBrush(painter,this,8,0,brushPointColor);
     }
 
@@ -478,7 +476,6 @@ void Widget::drawPointBrushStyle(QPainter &painter, QWidget *paintWidget, int sp
 //交替3个像素点
 void Widget::drawAlternatePointStyle(QPainter &painter, QWidget *paintWidget, int pointNum, QColor bkgdColor)
 {
-    painter.setBrush(Qt::green);
     QPen pen;
     pen.setColor(bkgdColor);
     painter.setPen(pen);
@@ -525,7 +522,6 @@ void Widget::drawAlternatePointStyle(QPainter &painter, QWidget *paintWidget, in
 
 void Widget::drawCrossPixpelPointStyle(QPainter &painter, QWidget *paintWidget, int pointNum, QColor bkgdColor)
 {
-    painter.setBrush(Qt::green);
     QPen pen;
     pen.setColor(bkgdColor);
     painter.setPen(pen);
@@ -556,7 +552,6 @@ void Widget::drawCrossPixpelPointStyle(QPainter &painter, QWidget *paintWidget, 
 
 void Widget::drawCrossPixpelPointStyle2(QPainter &painter, QWidget *paintWidget, int pointNum, QColor bkgdColor)
 {
-    painter.setBrush(Qt::green);
     QPen pen;
     pen.setColor(bkgdColor);
     painter.setPen(pen);
@@ -591,14 +586,14 @@ void Widget::drawCrossPixpelPointStyle2(QPainter &painter, QWidget *paintWidget,
 
 void Widget::drawGradientArc(QPainter *painter, int radius, double startAngle, double angleLength, int arcHeight, QColor color, int channelData)
 {
-    //设置渐变色
-    /*
     QRadialGradient gradient(0,0,radius);       //圆心，以及边缘弧度
     gradient.setColorAt(0,color);               //渐变色的起始点颜色
     gradient.setColorAt(1.0,color);             //渐变色的结束点的颜色
     painter->setBrush(gradient);
-    */
 
+//    QBrush brush;
+//    brush.setStyle();
+//    brush.setColor();
 
     QRectF rect(-radius,-radius,radius<<1,radius<<1);               //设定扇形所在区域
     QPainterPath path;
@@ -620,45 +615,28 @@ void Widget::drawGradientArc(QPainter *painter, int radius, double startAngle, d
         painter->setPen(QColor(BackgroundColor));               //边框颜色设置为背景颜色
     else
         painter->setPen(QColor(PartternBorderColor));           //边框颜色
-    painter->drawPath(path);            //指定绘画路径
+    painter->drawPath(path);
+
 
     //绘制文字
     painter->setPen(QColor(WholeRingTextColor));             //字体颜色
     painter->setFont(font);
 
-    QRectF rectPoint = path.boundingRect();
-    QPointF centerPoint = rectPoint.center();
-
 
     //计算中心点的缩放比例  70
-
-    painter->rotate(90);
-
     double scalePre = 1-(arcHeight/90.0);
-    QPointF textPoint;
-
-    textPoint.setX(centerPoint.x()+SubCenterRingRadius);
-    textPoint.setY(centerPoint.y());
-
-    qDebug()<<"未经过缩放前的中心点的坐标是:("<<rectPoint.center().x()<<" , "<<rectPoint.center().y()<<") ,缩放比例是： "<<QString::number(scalePre,'f',2)<<" 缩放后的中心点的坐标是： ("<<textPoint.x()<<","<<textPoint.y()<<")";
-
-
+    QString textStr;
 
     if(RingTextShowStyle == "无")
-        painter->drawText(textPoint,"");
+        textStr = "";
     else if(RingTextShowStyle == "百分比")
-         painter->drawText(textPoint,QString("%1%").arg(channelData));
+         textStr=QString("%1%").arg(channelData);
     else
-         painter->drawText(textPoint,QString::number(channelData));
+         textStr=QString::number(channelData);
 
-
-    painter->setPen(Qt::black);
-    painter->drawPoint(centerPoint);
-    painter->setPen(Qt::red);
-    painter->drawPoint(textPoint);
-
-
-    painter->rotate(-90);
+              //指定绘画路径
+    painter->setBrush(Qt::NoBrush);
+    painter->drawText(path.pointAtPercent(0.5),textStr);
 
 }
 
@@ -704,6 +682,7 @@ void Widget::drawRingInWidget(QPainter &painter, QWidget *paintWidget)
         QColor color = QColor(colorList[i+18]);
         if(ColorMap.contains(i))
         {
+            qDebug()<<"第 "<<i<<"  个通道使用的颜色是： "<<ColorMap.value(i);
             color =QColor(ColorMap.value(i));
         }
         if(RingDrawEndPos > 0)       //指定了弧形的扫过范围
@@ -712,6 +691,7 @@ void Widget::drawRingInWidget(QPainter &painter, QWidget *paintWidget)
             {
                 startPos += RingDrawEndPos/channelSum*(i-1);
                 shiftPos = RingDrawEndPos/channelSum*i;
+
                 drawGradientArc(&painter,radius,startPos,shiftPos,arcHeight,color,channelData);
             }
             else{    //顺时针画图
@@ -722,7 +702,7 @@ void Widget::drawRingInWidget(QPainter &painter, QWidget *paintWidget)
         }
         else
         {
-            if(RingDrawDirection == 1)
+            if(RingDrawDirection == 1)              //顺时针
             {
                 if(i!= count)
                     drawGradientArc(&painter,radius,startRadius -(360/channelSum*i),360/channelSum*i,arcHeight,color,channelData);
@@ -730,8 +710,8 @@ void Widget::drawRingInWidget(QPainter &painter, QWidget *paintWidget)
                     drawGradientArc(&painter,radius,-360,360+startRadius,arcHeight,color,channelData);
                 startRadius = startRadius- (360/channelSum*i);
             }
-            else
-            {
+            else{                                   //逆时针
+
                 if(i!=count)
                     drawGradientArc(&painter,radius,startRadius,360/channelSum*i,arcHeight,color,channelData);
                 else
@@ -797,5 +777,6 @@ void Widget::drawRingInWidget(QPainter &painter, QWidget *paintWidget)
     leavePath.addRect(-101,-125,201,251);
     leavePath -= tempPath;
     painter.drawPath(leavePath);
+
 }
 

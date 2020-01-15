@@ -52,6 +52,10 @@ class Widget : public QWidget
 
 public:
     explicit Widget(QWidget *parent = 0);
+
+
+    int  getWindowBrushStyle(){return brushStyle;};
+
     void setWindowBrushStyle(CustomBrushStyle type){brushStyle = type;};        //窗体的画刷风格
     void setWidgetbackgroundColor(QColor color){BackgroundColor = color;};      //窗体的背景颜色
     void setWidgetBrushColor(QColor color){brushColor = color;};
@@ -74,6 +78,11 @@ public:
         RingDrawDirection = direction;
     }
     void setDrawParttern(int type){partternType = type;};
+
+
+
+
+
     ~Widget();
 
 protected:

@@ -37,7 +37,6 @@ private:
     void initCharaItemPage();
     void initPieCharacterPage();            //初始化圆饼图
     void initNumberComBox(QComboBox* comBox,int startValue,int endValue);
-    void gradientArc(QPainter *painter, int radius, int startAngle, int angleLength, int arcHeight, QColor color ,int channelData);     //绘制扇形
     void initPartternStyleComBox();         //初始化圆饼图界面图案样式下拉列表
 
 
@@ -45,6 +44,8 @@ private slots:
     void doDealMenuAction();
     void doColorButtonClicked();            //颜色选择下拉按钮
     void doBrushStyleSelect();
+    void doBrushTableItemClicked(QTableWidgetItem* item);
+    void doBrushItemClicked(int,int);
 
 
  protected:
@@ -108,10 +109,6 @@ private:
     int m_endPos = 0;                       //圆形的起始点和结束点
     QMap<int,QString> PieChartPartColor;    //圆饼图的通道以及对应颜色
 
-
-
-
-
 //Qt控件
 private:
     Ui::Dialog *ui;  
@@ -141,7 +138,7 @@ private:
     QTableWidget *PieChartPattern;          //图案颜色
     QLineEdit    *PieChartPatternLineEdit;
 
-    QTableWidget *PieChartPatternStyle;     //图案样式
+    QTableWidget *PieChartPatternStyle;     //画刷样式表
 
 };
 

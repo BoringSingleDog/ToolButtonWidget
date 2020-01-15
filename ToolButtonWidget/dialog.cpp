@@ -507,14 +507,15 @@ void Dialog::initPieCharacterPage()
     PieChartPatternStyle = new QTableWidget(8,4);
     PieChartPatternStyle->horizontalHeader()->setVisible(false);
     PieChartPatternStyle->verticalHeader()->setVisible(false);
-
-    initPartternStyleComBox();              //初始化图案样式选择下拉列表
-
+    connect(PieChartPatternStyle,SIGNAL(itemClicked(QTableWidgetItem*)),this,SLOT(doBrushTableItemClicked(QTableWidgetItem*)));
+    connect(PieChartPatternStyle,SIGNAL(cellClicked(int,int)),this,SLOT(doBrushItemClicked(int,int)));
+    //初始化画刷样式选择下拉列表
+    initPartternStyleComBox();
 
     ui->PartternStyleCombox->setModel(PieChartPatternStyle->model());
     ui->PartternStyleCombox->setView(PieChartPatternStyle);
 
-    ui->PartternPaintWidget->setWindowBrushStyle(/*TanslucentCrossPixpelPoint*/Alternate3PixelPoints);
+  //  ui->PartternPaintWidget->setWindowBrushStyle(TanslucentCrossPixpelPoint);             //暂时不指定样式
     ui->PartternPaintWidget->setDrawParttern(1);
 }
 
@@ -526,57 +527,6 @@ void Dialog::initNumberComBox(QComboBox *comBox, int startValue, int endValue)
     }
 }
 
-//参数2：绘画半径
-//参数3：开始的角度
-//参数4：扫取的角度-顺时针
-//参数5：圆环的高度
-//参数6：填充色
-void Dialog::gradientArc(QPainter *painter, int radius, int startAngle, int angleLength, int arcHeight, QColor color,int channelData)
-{
-    /*
-    //设置渐变色
-    QRadialGradient gradient(0,0,radius);       //圆心，以及边缘弧度
-    gradient.setColorAt(0,color);               //渐变色的起始点颜色
-    gradient.setColorAt(1.0,color);             //渐变色的结束点的颜色
-    painter->setBrush(gradient);
-
-
-    QRectF rect(-radius,-radius,radius<<1,radius<<1);               //设定扇形所在区域
-    QPainterPath path;
-    path.arcTo(rect,startAngle,angleLength);
-
-
-    //内部椭圆
-    QPainterPath subPath;
-    subPath.addEllipse(rect.adjusted(arcHeight,arcHeight,-arcHeight,-arcHeight));
-
-    //绘制路径为外圆减去内圆
-    path -= subPath;
-
-    //文字字体
-    QFont font;
-    font.setFamily(ui->PieChartFontComBox->currentText());
-    font.setPointSize(ui->FontSizeComBox->currentText().toInt());
-
-    if(PieChartBorderColorName == "None")
-        painter->setPen(Qt::NoPen);                                 //边框颜色设置为透明
-    else
-        painter->setPen(QColor(PieChartBorderColorName));           //边框颜色
-    painter->drawPath(path);            //指定绘画路径
-
-    //绘制文字
-    painter->setPen(QColor(PieChartFontColorName));             //字体颜色
-    painter->setFont(font);
-    if(ui->dataShowStyle->currentText() == "无")
-         painter->drawText(path.pointAtPercent(0.5)," ");
-    else if(ui->dataShowStyle->currentText() == "百分比")
-         painter->drawText(path.pointAtPercent(0.1),QString("%1%").arg(channelData));
-    else
-         painter->drawText(path.pointAtPercent(0.1),QString::number(channelData));
-
-//    qDebug()<<"绘制文字的位置X： "<<path.pointAtPercent(0.5).x()<<"  Y: "<<path.pointAtPercent(0.5).y();
-    */
-}
 
 //初始化圆饼图界面图案样式下拉列表
 void Dialog::initPartternStyleComBox()
@@ -592,31 +542,21 @@ void Dialog::initPartternStyleComBox()
         {
             for(int j=0;j<4;j++)
             {
-                QPushButton *brushBtn = new QPushButton(" ");
-                brushBtn->setMinimumHeight(40);
-                brushBtn->setMinimumWidth(90);
-                brushBtn->setStyleSheet("border:none;");
-                Widget *widget = new Widget(brushBtn);
+                Widget *widget = new Widget();
                 widget->setStyleSheet("border:none;");
                 widget->setWidgetBrushColor(QColor(PieChartPatternColorName));
                 widget->setWindowBrushStyle((CustomBrushStyle)(i*4+j));
                 widget->setDrawParttern(-1);   //指定绘画的样式
-                connect(brushBtn,SIGNAL(clicked()),this,SLOT(doBrushStyleSelect()));
                 PieChartPatternStyle->setCellWidget(i,j,widget);
             }
         }
         else
         {
-            QPushButton *brushBtn = new QPushButton(" ");
-            brushBtn->setMinimumHeight(40);
-            brushBtn->setMinimumWidth(90);
-            brushBtn->setStyleSheet("border:none;");
-            Widget *widget = new Widget(brushBtn);
+            Widget *widget = new Widget();
             widget->setStyleSheet("border:none;");
             widget->setWidgetBrushColor(QColor(PieChartPatternColorName));
             widget->setWindowBrushStyle((CustomBrushStyle)(28));
             widget->setDrawParttern(-1);   //指定绘画的样式
-            connect(brushBtn,SIGNAL(clicked()),this,SLOT(doBrushStyleSelect()));
             PieChartPatternStyle->setCellWidget(7,0,widget);
         }
     } 
@@ -752,6 +692,18 @@ void Dialog::doColorButtonClicked()
 void Dialog::doBrushStyleSelect()
 {
     qDebug()<<"画刷类型按钮被点击";
+}
+
+void Dialog::doBrushTableItemClicked(QTableWidgetItem *item)
+{
+    int column = item->column();
+    int row = item->row();
+    qDebug()<<"鼠标点击的Item位于第 "<<row<<"  行，第 "<<column<<" 列";
+}
+
+void Dialog::doBrushItemClicked(int   row, int   column)
+{
+    qDebug()<<"鼠标点击的Item位于第 "<<row<<"  行，第 "<<column<<" 列";
 }
 
 bool Dialog::eventFilter(QObject *obj, QEvent *event)
