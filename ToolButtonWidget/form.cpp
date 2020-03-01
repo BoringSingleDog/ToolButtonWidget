@@ -93,3 +93,50 @@ void Form::on_pushButton_21_clicked()
     m_dialog->showComfirm(PieChartItem);
     m_dialog->show();
 }
+
+void Form::on_DynamicClibrationBtn_clicked()
+{
+    m_dialog->showComfirm(DynamicClibration);
+    m_dialog->show();
+}
+
+void Form::on_DataGroupBtn_clicked()
+{
+    m_dialog->showComfirm(DataGroupItem);
+    m_dialog->show();
+}
+
+void Form::on_pushButton_22_clicked()
+{
+    m_dialog->showComfirm(XYEllispImage);
+    m_dialog->show();
+}
+
+void Form::on_HistogramButton_clicked()
+{
+    m_dialog->showComfirm(HistogramPage);
+    m_dialog->show();
+}
+
+void Form::on_WatchNeedleBtn_clicked()
+{
+    m_dialog->showComfirm(WatchNeedlePage);
+    m_dialog->show();
+}
+
+void Form::on_DynamicPaint_clicked()
+{
+    m_dialog->showComfirm(DynamicPainttingPage);
+    m_dialog->show();
+}
+
+void Form::on_pushButton_23_clicked()
+{
+    m_dialog->showComfirm(MoveGrapgicalPage);
+    m_dialog->show();
+}
+
+void Form::on_pushButton_24_clicked()
+{
+    m_dialog->showComfirm(PLCControlPage);
+}

@@ -7,16 +7,15 @@
 #include <QPen>
 #include <QBrush>
 #include <QTime>
-
+#include <QVBoxLayout>
+#include <QListWidget>
 
 Dialog::Dialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Dialog)
 {
     ui->setupUi(this);
-
     subDlg = new subDialog;
-
     setWindowTitle(QStringLiteral("新增 滑动开关 原件"));
     ui->ElementPropertyTab->removeTab(1);
     initWindowPage();
@@ -26,6 +25,11 @@ Dialog::Dialog(QWidget *parent) :
     initValueItemPage();
     initCharaItemPage();
     initPieCharacterPage();
+    initDynamicClibrationPage();
+    initDataGroupPage();
+    initXYCurveImagePage();
+    initWatchNeedlePage();
+    initMoveGraphicalPage();
 }
 
 Dialog::~Dialog()
@@ -97,6 +101,37 @@ void Dialog::showComfirm(ToolButtonType widgetType)
     case PieChartItem:
         setWindowTitle("新增 圆饼图 元件");
         ui->generalProStack->setCurrentIndex(10);
+        break;
+    case DynamicClibration:
+        setWindowTitle("新增 动态刻度 元件");
+        ui->generalProStack->setCurrentIndex(11);
+        break;
+    case DataGroupItem:
+        setWindowTitle("新增 数据群组 元件");
+        ui->generalProStack->setCurrentIndex(12);
+        break;
+    case XYEllispImage:
+        setWindowTitle("新增 XY曲线图 元件");
+        ui->generalProStack->setCurrentIndex(13);
+        break;
+    case HistogramPage:
+        setWindowTitle("新增 棒图 元件");
+        ui->generalProStack->setCurrentIndex(14);
+        break;
+    case WatchNeedlePage:
+        setWindowTitle("新增 表针 元件");
+        ui->generalProStack->setCurrentIndex(15);
+        break;
+    case DynamicPainttingPage:
+        setWindowTitle("新增 动态绘图 元件");
+        ui->generalProStack->setCurrentIndex(16);
+        break;
+    case MoveGrapgicalPage:
+        setWindowTitle("新增 移动图形 元件");
+        ui->generalProStack->setCurrentIndex(17);
+        break;
+    case PLCControlPage:
+        showPLCControlWidget();
         break;
     }
 }
@@ -466,7 +501,7 @@ void Dialog::initPieCharacterPage()
     PieChartBorderColor = new QTableWidget(9,8);        //边框颜色
     PieChartBorderColor->setProperty("tableName","PieChartBorderColor");
     PieChartBorderLineEdit = new QLineEdit(ui->PieChartBorderColor);
-    initColorChooseComBox(PieChartBorderColor,PieChartBorderLineEdit,ui->PieChartBorderColor);
+    (PieChartBorderColor,PieChartBorderLineEdit,ui->PieChartBorderColor);
 
     PieChartFontColor = new QTableWidget(8,8);          //字体颜色
     PieChartFontColor->setProperty("tableName","PieChartFontColor");
@@ -559,7 +594,177 @@ void Dialog::initPartternStyleComBox()
             widget->setDrawParttern(-1);   //指定绘画的样式
             PieChartPatternStyle->setCellWidget(7,0,widget);
         }
-    } 
+    }
+}
+
+void Dialog::initDynamicClibrationPage()
+{
+    ui->DynamicScalrRadiusSlider->installEventFilter(this);
+    ui->DynamicCalibrationStyleCombox->setCurrentIndex(0);
+
+    //初始化主副刻度尺寸选择下拉列表
+    for(int i=1;i<=100;i++)
+    {
+        ui->MainScaleCombox->addItem(QString::number(i));
+        ui->viceScaleCombox->addItem(QString::number(i));
+    }
+
+    for(int i=5;i<=255;i++)
+        ui->ScaleChartSizeCombox->addItem(QString::number(i));
+
+    QFontDatabase fontBase;
+    QStringList fontNames = fontBase.families();
+
+    for(int i=0;i<fontNames.size();i++)
+    {
+        ui->ScaleChartFontCombox->addItem(fontNames.at(i));
+    }
+
+
+    //初始化刻度颜色选择下拉栏
+    DynamicScaleColor = new QTableWidget(8,8);
+    DynamicScaleColor->setProperty("tableName","DynamicScaleColor");
+    DynamicScaleColorLineEdit = new QLineEdit;
+    initColorChooseComBox(DynamicScaleColor,DynamicScaleColorLineEdit,ui->ScaleColorCombox);
+
+
+    //初始化刻度符号界面的颜色选择下拉列表
+    ScaleChartColor = new QTableWidget(8,8);
+    ScaleChartColor->setProperty("tableName","ScaleChartColor");
+    ScaleChartColorLineEdit = new QLineEdit;
+    initColorChooseComBox(ScaleChartColor,ScaleChartColorLineEdit,ui->ScaleChartColorCombox);
+
+
+    //隐藏刻度符号页面的属性设置
+    ui->ScaleChartSubWidget->hide();
+    ui->stackedWidget->setCurrentIndex(0);
+
+    DynamicScaleTipWidget = new QWidget(this);
+    DynamicScaleTipWidget->setWindowFlags(Qt::FramelessWindowHint);
+    QHBoxLayout *layout = new QHBoxLayout;
+    DynamicScaleTipLabel = new QLabel("20");
+    DynamicScaleTipLabel->setAlignment(Qt::AlignVCenter | Qt::AlignHCenter);
+    layout->addWidget(DynamicScaleTipLabel);
+    layout->setMargin(0);
+    DynamicScaleTipWidget->setLayout(layout);
+    DynamicScaleTipWidget->setFixedSize(QSize(35,20)); 
+}
+
+//初始化数据群组界面中的相关控件
+void Dialog::initDataGroupPage()
+{
+
+    //初始化数据群组界面中的颜色选择下拉框
+    DataGroupColor = new QTableWidget(8,8);
+    DataGroupColor->setProperty("tableName","DataGroupColor");
+    DataGroupColorLineEdit = new QLineEdit;
+    initColorChooseComBox(DataGroupColor,DataGroupColorLineEdit,ui->DataGroupItemColorCombox);
+
+    ui->DataGroupMinValue->setValidator(new QIntValidator(0,32767,this));
+    ui->DataGroupMaxValue->setValidator(new QIntValidator(0,32767,this));
+    ui->DataGroupMinValue->setText(QString::number(0));
+    ui->DataGroupMaxValue->setText(QString::number(32767));
+
+    ui->DataGroupUseShiftAddrCheckBox->setChecked(false);           //默认为不选中
+    ui->DataGroupShiftAddrStackWidget->setCurrentIndex(0);
+
+    ui->DataGroupTotalChannelCombox->setCurrentIndex(4);        //指定当前有多少通道总数
+    ui->DataGroupWatchSubWidget->setHidden(true);
+
+}
+
+void Dialog::initXYCurveImagePage()
+{
+    ui->X_Group->hide();
+    ui->Y_Group->hide();
+    ui->DataLimitSourceFromRegister->setChecked(false);
+}
+
+void Dialog::initWatchNeedlePage()
+{
+    ui->ScaleScopeSubWidget->hide();
+    ui->ScaleSubWidget->hide();
+    ui->CustomDefineRValue->hide();
+    ui->RegisterEquipmentInfoamtion->hide();
+
+    establishConnectRelation(ui->showValueScopeScale,ui->ScaleScopeSubWidget);
+    establishConnectRelation(ui->UserCustomDefineWdithCheckBox,ui->CustomDefineRValue);
+    establishConnectRelation(ui->UseScaleSymbolCheckbox,ui->ScaleSubWidget);
+
+    WatchNeedleColor = new QTableWidget(8,8);
+    WatchNeedleColor->setProperty("tableName","BottomLimitColor");
+    QString styleSheet = "background-color:blue;";
+    WatchNeedleLineEdit = new QLineEdit();
+    WatchNeedleLineEdit->setStyleSheet(styleSheet);
+    initColorChooseComBox(WatchNeedleColor,WatchNeedleLineEdit,ui->BottomLimitColorCombox);
+
+    NormalValueColor = new QTableWidget(8,8);
+    NormalValueColor->setProperty("tableName","NormalValueColor");
+    NormalValueLineEdit = new QLineEdit();
+    styleSheet = "background-color:yellow;";
+    NormalValueLineEdit->setStyleSheet(styleSheet);
+    initColorChooseComBox(NormalValueColor,NormalValueLineEdit,ui->NormalValueColorCombox);
+
+    TopLimitValueColor = new QTableWidget(8,8);
+    TopLimitValueColor->setProperty("tableName","TopLimitValueColor");
+    TopLimitValueLineEdit = new QLineEdit();
+    styleSheet = "background-color:red;";
+    TopLimitValueLineEdit->setStyleSheet(styleSheet);
+    initColorChooseComBox(TopLimitValueColor,TopLimitValueLineEdit,ui->TopLimitColorCombox);
+
+    //字体选择
+    QFontDatabase fontBase;
+    QStringList fontList = fontBase.families();
+    foreach (QString fontStr, fontList)
+    {
+        ui->WatchNeedlFontCombox->addItem(fontStr);
+        ui->WatchNeedlFontCombox->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+    }
+    ui->WatchNeedlFontCombox->setCurrentIndex(0);
+
+    //字体颜色
+    WatchNeedleFontColor = new QTableWidget(8,8);
+    WatchNeedleFontColor->setProperty("tableName","WatchNeedleFontColor");
+    WatchNeedleFontLineEdit = new QLineEdit();
+    initColorChooseComBox(WatchNeedleFontColor,WatchNeedleFontLineEdit,ui->WatchNedlFontColor);
+
+    //字体大小
+    for(int i=5;i<=255;i++)
+    {
+        ui->WatchNeedleFontSizeCombox->addItem(QString::number(i));
+    }
+
+
+
+}
+
+void Dialog::initMoveGraphicalPage()
+{
+    ui->MoveGraphLimitValueWidget->hide();
+    ui->MoveGraphPropertyCoordinate->hide();
+
+    for(int i=1;i<257;i++)
+    {
+        ui->StatusNumbeCombox->addItem(QString::number(i));
+    }
+
+
+    ui->XCoordinateTopLimit->setText("1023");
+    ui->XCoordinateTopLimit->setValidator(new QIntValidator(0,1023));
+
+    ui->XCoordinateBottomLimit->setText("0");
+}
+
+void Dialog::establishConnectRelation(QCheckBox *checkbox, QWidget *widget)
+{
+    int state = 0;
+    connect(checkbox,&QCheckBox::stateChanged,[state,widget](const int value)mutable{
+        state = value;
+        if(state == 2)
+            widget->show();
+        else if(state == 0)
+            widget->hide();
+    });
 }
 
 void Dialog::doDealMenuAction()
@@ -593,6 +798,7 @@ void Dialog::doColorButtonClicked()
     QPushButton *button = qobject_cast<QPushButton*>(sender());
     QString tableName = button->property("tableName").toString();
     QString colorName = button->property("colorName").toString();
+
     if(colorName == "Other")
     {
         QColor color = QColorDialog::getColor(Qt::black);
@@ -633,6 +839,41 @@ void Dialog::doColorButtonClicked()
           ui->PartternPaintWidget->setWidgetBrushColor(QColor(colorName));
           ui->PartternPaintWidget->setWidgetRingColor(ui->ChannelChooseComBox->currentText().toInt(),PieChartPatternColorName);
           initPartternStyleComBox();
+        }
+        else if(tableName == "DynamicScaleColor")
+        {
+            DynamicScaleColorStr = colorName;
+            DynamicScaleColorLineEdit->setStyleSheet(styleSheet);
+        }
+        else if(tableName == "ScaleChartColor")
+        {
+            ScaleChartColorStr = colorName;
+            ScaleChartColorLineEdit->setStyleSheet(styleSheet);
+        }
+        else if(tableName == "DataGroupColor")
+        {
+            DataGroupColorStr = colorName;
+            DataGroupColorLineEdit->setStyleSheet(styleSheet);
+        }
+        else if(tableName == "BottomLimitColor")
+        {
+            WatchNeedleColorStr = colorName;
+            WatchNeedleLineEdit->setStyleSheet(styleSheet);
+        }
+        else if(tableName == "NormalValueColor")
+        {
+            NormaleValueColorStr = colorName;
+            NormalValueLineEdit->setStyleSheet(styleSheet);
+        }
+        else if(tableName == "TopLimitValueColor")
+        {
+            TopLimitValueColorStr = colorName;
+            TopLimitValueLineEdit->setStyleSheet(styleSheet);
+        }
+        else if(tableName == "WatchNeedleFontColor")
+        {
+            WatchNeedlFontColorStr = colorName;
+            WatchNeedleFontLineEdit->setStyleSheet(styleSheet);
         }
     }
     else if(colorName == "BorderColorNone")     //边框颜色设置为透明
@@ -685,6 +926,41 @@ void Dialog::doColorButtonClicked()
           ui->PartternPaintWidget->setWidgetRingColor(ui->ChannelChooseComBox->currentText().toInt(),PieChartPatternColorName);
           initPartternStyleComBox();
         }
+        else if(tableName == "DynamicScaleColor")
+        {
+            DynamicScaleColorStr = colorName;
+            DynamicScaleColorLineEdit->setStyleSheet(styleSheet);
+        }
+        else if(tableName == "ScaleChartColor")
+        {
+            ScaleChartColorStr = colorName;
+            ScaleChartColorLineEdit->setStyleSheet(styleSheet);
+        }
+        else if(tableName == "DataGroupColor")
+        {
+            DataGroupColorStr = colorName;
+            DataGroupColorLineEdit->setStyleSheet(styleSheet);
+        }
+        else if(tableName == "BottomLimitColor")
+        {
+            WatchNeedleColorStr = colorName;
+            WatchNeedleLineEdit->setStyleSheet(styleSheet);
+        }
+        else if(tableName == "NormalValueColor")
+        {
+            NormaleValueColorStr = colorName;
+            NormalValueLineEdit->setStyleSheet(styleSheet);
+        }
+        else if(tableName == "TopLimitValueColor")
+        {
+            TopLimitValueColorStr = colorName;
+            TopLimitValueLineEdit->setStyleSheet(styleSheet);
+        }
+        else if(tableName == "WatchNeedleFontColor")
+        {
+            WatchNeedlFontColorStr = colorName;
+            WatchNeedleFontLineEdit->setStyleSheet(styleSheet);
+        }
     }
     update();       //立即刷新
 }
@@ -706,9 +982,83 @@ void Dialog::doBrushItemClicked(int   row, int   column)
     qDebug()<<"鼠标点击的Item位于第 "<<row<<"  行，第 "<<column<<" 列";
 }
 
+void Dialog::showPLCControlWidget()
+{
+    qDebug()<<"进入到生成PLC控制界面";
+ 
+    QDialog *widget = new QDialog();
+    QHBoxLayout *Hlayout = new QHBoxLayout;
+    QVBoxLayout *Vlayout = new QVBoxLayout;
+    
+    QListWidget *listWidget = new QListWidget(widget);
+    listWidget->addItem("1：[local HMI：LB-3] =>执行宏指令：[ID:001] test mode_com2_rs485_2w(OFF->ON)");
+    listWidget->addItem("2：[local HMI：LB-4] =>执行宏指令：[ID:002] test_mode_com2_rs485_4w(OFF->ON)");
+    listWidget->addItem("3：[local HMI：LB-2] =>执行宏指令：[ID:003] test_mode_com1_rs232(OFF->ON)");
+    listWidget->addItem("4：[local HMI：LB-10] =>执行宏指令：[ID:004] Beep(OFF->ON)");
+    listWidget->addItem("5：[local HMI：LB-301] =>执行宏指令：[ID:005] Memory _test(OFF->ON)");
+    listWidget->addItem("6：[local HMI：LB-302] =>执行宏指令：[ID:007] Run Memory Test Time(OFF->ON)");
+    listWidget->addItem("7：[local HMI：LB-303] =>背光灯控制(打开)");
+    listWidget->addItem("8：[local HMI：LB-600] =>执行宏指令：[ID:008] Static IP(OFF->ON))");
+    listWidget->addItem("9：[local HMI：LB-601] =>执行宏指令：[ID:009] DHCP(OFF->ON)");    
+    listWidget->addItem("10：[local HMI：LB-9] =>执行宏指令：[ID:010] test_Result(OFF->ON)");
+    listWidget->addItem("11：[local HMI：LB-6] =>执行宏指令：[ID:013] test_mode_com4_rs485_2w(OFF->ON)");
+    listWidget->addItem("12：[local HMI：LB-8] =>执行宏指令：[ID:014] test_mode_com3_rs232(OFF->ON)");
+    listWidget->addItem("13：[local HMI：LB-1109] =>背光灯控制(返回值)(关闭)(执行：窗口110)");
+    listWidget->addItem("14：[local HMI：LW-40] =>切换基本窗口(换页后地址数值归零)");
+
+    widget->exec();
+}
+
 bool Dialog::eventFilter(QObject *obj, QEvent *event)
 {
-     return QDialog::eventFilter(obj,event);
+    if(obj == ui->DynamicScalrRadiusSlider )
+    {
+        if(event->type() == QEvent::MouseMove && ui->DynamicScalrRadiusSlider->underMouse())
+        {
+            int value = ui->DynamicScalrRadiusSlider->value();
+            ((QLabel*)DynamicScaleTipWidget->children().at(1))->setText(QString::number(value));
+            QMouseEvent *mouseEvent = (QMouseEvent*)event;
+            if(mouseEvent->windowPos().x() - ((QSlider*)obj)->geometry().x() <180 && mouseEvent->windowPos().x() - ((QSlider*)obj)->geometry().x()>30)
+                DynamicScaleTipWidget->move(mouseEvent->windowPos().x()-15,335);
+            DynamicScaleTipWidget->show();
+
+            qDebug()<<"Slider左上角的窗口坐标是： "<<((QSlider*)obj)->geometry().x()<<" the y is: "<<((QSlider*)obj)->geometry().y()-20;
+            qDebug()<<"鼠标点击的位置相对于窗口而言，坐标是："<<mouseEvent->windowPos();
+            qDebug()<<"鼠标点击的位置相对于屏幕而言，坐标是："<<mouseEvent->screenPos();
+        }
+        else if(event->type() == QEvent::MouseButtonRelease)
+        {
+            DynamicScaleTipWidget->hide();
+        }
+        return QDialog::eventFilter(obj,event);
+    }
+    else
+        return QDialog::eventFilter(obj,event);
+}
+
+void Dialog::mousePressEvent(QMouseEvent *event)
+{
+    qDebug()<<"the mouseevent was clicked";
+    if(event->buttons() == Qt::LeftButton)
+    {
+        qDebug()<<"mouse left button was pressed";
+
+        if(ui->DynamicScalrRadiusSlider->underMouse())
+        {
+            qDebug()<<"mouse is above the slider";
+        }
+    }
+
+}
+
+void Dialog::mouseReleaseEvent(QMouseEvent *event)
+{
+
+}
+
+void Dialog::mouseMoveEvent(QMouseEvent *event)
+{
+
 }
 
 void Dialog::on_BitStatusLightRadio_clicked()
@@ -987,22 +1337,22 @@ void Dialog::on_channelNumberCount_currentTextChanged(const QString &arg1)
 }
 
 //更改指定通道上百分比字体的颜色
-void Dialog::on_PieChartFontColor_currentIndexChanged(int )
+void Dialog::on_PieChartFontColor_currentIndexChanged(int arg1)
 {
     update();
 }
 
 //更改指定通道上背景颜色
-void Dialog::on_PieChartPaPatternCombox_currentIndexChanged(int )
+void Dialog::on_PieChartPaPatternCombox_currentIndexChanged(int arg1)
 {
     update();
 }
 
 //更换指定通道上的背景样式
-void Dialog::on_comboBox_15_currentIndexChanged(int )
-{
-    update();
-}
+//void Dialog::on_comboBox_15_currentIndexChanged(int arg1)
+//{
+//    update();
+//}
 
 //改变通道上字体的显示样式，数据Or百分比
 void Dialog::on_dataShowStyle_currentTextChanged(const QString& arg1)
@@ -1039,4 +1389,209 @@ void Dialog::on_RotateDirectionButton_clicked()
             ui->PartternPaintWidget->setWidgetRingDrawDirection(m_rotateDirection,m_startPos,m_endPos);
         }
     }
+}
+
+void Dialog::on_DynamicCalibrationStyleCombox_currentTextChanged(const QString &arg1)
+{
+    if(arg1 != "圆形")
+    {
+        ui->DCRotateDirectionButton->hide();
+        ui->DCRotateDirectionLabel->hide();
+    }
+    else
+    {
+        ui->DCRotateDirectionButton->show();
+        ui->DCRotateDirectionLabel->show();
+    }
+}
+
+void Dialog::on_DynamicScalrRadiusSlider_valueChanged(int value)
+{
+
+    ui->DynamicScalrRadiusSlider->setToolTip(QString::number(value));
+}
+
+
+void Dialog::on_UseScaleChartCheckBox_stateChanged(int arg1)
+{
+    if(ui->UseScaleChartCheckBox->checkState() == Qt::Checked)
+    {
+        ui->ScaleChartSubWidget->show();
+    }
+    else
+        ui->ScaleChartSubWidget->hide();
+
+}
+
+
+void Dialog::on_UseRegisterData_stateChanged(int arg1)
+{
+    if(arg1 == 0)
+    {
+        ui->stackedWidget->setCurrentIndex(0);
+    }
+    else if(arg1 == 2)
+    {
+        ui->stackedWidget->setCurrentIndex(1);
+    }
+}
+
+void Dialog::on_DataGroupUseShiftAddrCheckBox_stateChanged(int arg1)
+{
+    if(arg1 == 0)               //未选中
+    {
+        ui->DataGroupShiftAddrStackWidget->setCurrentIndex(0);
+    }
+    else if(arg1 == 2)          //选中
+    {
+        ui->DataGroupShiftAddrStackWidget->setCurrentIndex(1);
+    }
+}
+
+
+void Dialog::on_DataGroupTotalChannelCombox_currentTextChanged(const QString &arg1)
+{
+    ui->DataGroupSingleChannel->clear();
+    int totalChannel = arg1.toInt();
+    if(totalChannel > 1)
+    {
+        for(int i=0;i<totalChannel;i++)
+        {
+            ui->DataGroupSingleChannel->addItem(QString::number(i));
+        }
+    }
+    else
+    {
+        ui->DataGroupSingleChannel->addItem("1");
+    }
+}
+
+void Dialog::on_enableWatchCheckBox_stateChanged(int arg1)
+{
+    if(arg1 == 0)
+    {
+        ui->DataGroupWatchSubWidget->setHidden(true);
+    }
+    else if(arg1 == 2)
+    {
+        ui->DataGroupWatchSubWidget->setHidden(false);
+    }
+
+}
+
+void Dialog::on_DataLimitSourceFromRegister_stateChanged(int arg1)
+{
+    if(arg1 == 0)
+    {
+        ui->X_Group->hide();
+        ui->Y_Group->hide();
+    }
+    else if(arg1 == 2)
+    {
+        ui->X_Group->show();
+        ui->Y_Group->show();
+    }
+}
+
+void Dialog::on_XYCurveChannelCountSpinbox_valueChanged(int arg1)
+{
+    ui->XYCurveChannelNumber->clear();
+    if(arg1>1)
+    {
+        for(int i=0;i<arg1;i++)
+        {
+            ui->XYCurveChannelNumber->addItem(QString::number(i));
+        }
+    }
+    else
+    {
+        ui->XYCurveChannelNumber->addItem("0");
+    }
+}
+
+void Dialog::on_XYCuroveDataLimitDesc_clicked()
+{
+     subDlg->showSubDialog(XYCuroveUseInformation);
+     subDlg->show();
+}
+
+void Dialog::on_XYCurveControlAddrSettingBtn_clicked()
+{
+    subDlg->showSubDialog(AddressSubDialogPage);
+    subDlg->show();
+}
+
+void Dialog::on_CancelBtn_clicked()
+{
+    this->close();
+}
+
+void Dialog::on_UseValueFromRegister_stateChanged(int arg1)
+{
+    if(arg1 == 2)
+    {
+        ui->ValueLimitSubWidget->hide();
+        ui->RegisterEquipmentInfoamtion->show();
+    }
+    else if(arg1 == 0)
+    {
+        ui->ValueLimitSubWidget->show();
+        ui->RegisterEquipmentInfoamtion->hide();
+    }
+}
+
+void Dialog::on_WatchNeedleSettingBtn_clicked()
+{
+    subDlg->setWidgetCaller("WatchNeedle");
+    subDlg->showSubDialog(WatchNeedleAddrPage);
+    subDlg->show();
+}
+
+void Dialog::on_BarGraphControlSettingBtn_clicked()
+{
+    subDlg->setWidgetCaller("BarGraph");
+    subDlg->showSubDialog(WatchNeedleAddrPage);
+    subDlg->show();
+}
+
+void Dialog::on_ClearAddrSetting_clicked()
+{
+    subDlg->setWidgetCaller("DynamicPaint");
+    subDlg->showSubDialog(WatchNeedleAddrPage);
+    subDlg->show();
+}
+
+void Dialog::on_MoreInformation1_clicked()
+{
+    subDlg->setWidgetCaller("DynamicPaint");
+    subDlg->showSubDialog(MoreInformationOne);
+    subDlg->show();
+}
+
+void Dialog::on_MoreInfomation2_clicked()
+{
+    subDlg->setWidgetCaller("DynamicPaint");
+    subDlg->showSubDialog(MoreInformationTwo);
+    subDlg->show();
+}
+
+void Dialog::on_LimitValueFromRegister_stateChanged(int arg1)
+{
+    if(arg1 == 0)
+    {
+        ui->MoveGraphLimitValueWidget->hide();
+        ui->MoveGraphPropertyCoordinate->hide();
+    }
+    else if(arg1 == 2)
+    {
+        ui->MoveGraphLimitValueWidget->show();
+        ui->MoveGraphPropertyCoordinate->show();
+    }
+}
+
+void Dialog::on_LimitValueAddiDescBtn_clicked()
+{
+    subDlg->setWidgetCaller("MoveGraph");
+    subDlg->showSubDialog(MoveGraphLimitValueDesc);
+    subDlg->show();
 }

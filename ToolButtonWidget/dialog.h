@@ -9,6 +9,9 @@
 #include "datatype.h"
 #include "subDialog.h"
 #include "widget.h"
+#include <QLabel>
+#include <QMouseEvent>
+#include <QCheckBox>
 
 namespace Ui {
 class Dialog;
@@ -38,7 +41,14 @@ private:
     void initPieCharacterPage();            //初始化圆饼图
     void initNumberComBox(QComboBox* comBox,int startValue,int endValue);
     void initPartternStyleComBox();         //初始化圆饼图界面图案样式下拉列表
+    void initDynamicClibrationPage();      //初始化动态刻度界面
+    void initDataGroupPage();               //初始化数据群组界面
+    void initXYCurveImagePage();            //初始化XY曲线图
+    void initWatchNeedlePage();             //初始化表针界面
+    void initMoveGraphicalPage();           //初始化移动图形界面
 
+    void establishConnectRelation(QCheckBox *checkbox , QWidget *widget);
+    void showPLCControlWidget();
 
 private slots:
     void doDealMenuAction();
@@ -50,6 +60,9 @@ private slots:
 
  protected:
     bool eventFilter(QObject *obj, QEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
 
 
 //由界面控件自己形成的槽函数
@@ -88,11 +101,31 @@ private slots:
     void on_channelNumberCount_currentTextChanged(const QString &arg1);
     void on_PieChartFontColor_currentIndexChanged(int index);
     void on_PieChartPaPatternCombox_currentIndexChanged(int index);
-    void on_comboBox_15_currentIndexChanged(int index);
+  //  void on_comboBox_15_currentIndexChanged(int index);
     void on_dataShowStyle_currentTextChanged(const QString &arg1);
     void on_PieChartFontComBox_currentTextChanged(const QString &arg1);
     void on_FontSizeComBox_currentTextChanged(const QString &arg1);
     void on_RotateDirectionButton_clicked();
+    void on_DynamicCalibrationStyleCombox_currentTextChanged(const QString &arg1);
+    void on_DynamicScalrRadiusSlider_valueChanged(int value);
+    void on_UseScaleChartCheckBox_stateChanged(int arg1);
+    void on_UseRegisterData_stateChanged(int arg1);
+    void on_DataGroupUseShiftAddrCheckBox_stateChanged(int arg1);
+    void on_DataGroupTotalChannelCombox_currentTextChanged(const QString &arg1);
+    void on_enableWatchCheckBox_stateChanged(int arg1);
+    void on_DataLimitSourceFromRegister_stateChanged(int arg1);
+    void on_XYCurveChannelCountSpinbox_valueChanged(int arg1);
+    void on_XYCuroveDataLimitDesc_clicked();
+    void on_XYCurveControlAddrSettingBtn_clicked();
+    void on_CancelBtn_clicked();
+    void on_UseValueFromRegister_stateChanged(int arg1);
+    void on_WatchNeedleSettingBtn_clicked();
+    void on_BarGraphControlSettingBtn_clicked();
+    void on_ClearAddrSetting_clicked();
+    void on_MoreInformation1_clicked();
+    void on_MoreInfomation2_clicked();
+    void on_LimitValueFromRegister_stateChanged(int arg1);
+    void on_LimitValueAddiDescBtn_clicked();
 
 private:
     subDialog *subDlg = NULL;
@@ -108,6 +141,13 @@ private:
     int m_startPos = 0;
     int m_endPos = 0;                       //圆形的起始点和结束点
     QMap<int,QString> PieChartPartColor;    //圆饼图的通道以及对应颜色
+    QString  DynamicScaleColorStr="";       //刻度颜色
+    QString  ScaleChartColorStr = "";       //刻度符号界面的颜色
+    QString  DataGroupColorStr = "";        //数据群组界面选定的颜色
+    QString  WatchNeedleColorStr = "";      //表针中超出下限的数据颜色
+    QString  NormaleValueColorStr = "";     //表针中正常范围的数据颜色
+    QString  TopLimitValueColorStr = "";    //表针中超出上限的数据颜色
+    QString  WatchNeedlFontColorStr = "";   //表针中文字的颜色
 
 //Qt控件
 private:
@@ -138,7 +178,34 @@ private:
     QTableWidget *PieChartPattern;          //图案颜色
     QLineEdit    *PieChartPatternLineEdit;
 
+    QTableWidget *DynamicScaleColor;        //刻度颜色选择下拉列表
+    QLineEdit    *DynamicScaleColorLineEdit;
+
+    QTableWidget *ScaleChartColor;
+    QLineEdit    *ScaleChartColorLineEdit;
+
+    QTableWidget *DataGroupColor;           //数据群组颜色选择下拉栏
+    QLineEdit    *DataGroupColorLineEdit;
+
+
     QTableWidget *PieChartPatternStyle;     //画刷样式表
+
+
+    QTableWidget *WatchNeedleColor;         //表针元件中的下限颜色
+    QLineEdit    *WatchNeedleLineEdit;
+
+    QTableWidget *NormalValueColor;         //表针元件中的正常数据的颜色
+    QLineEdit    *NormalValueLineEdit;
+
+    QTableWidget *TopLimitValueColor;       //表针元件中超出上限的数据颜色
+    QLineEdit    *TopLimitValueLineEdit;
+
+    QTableWidget *WatchNeedleFontColor;     //表针元件中的文字的颜色
+    QLineEdit    *WatchNeedleFontLineEdit;
+
+
+    QWidget      *DynamicScaleTipWidget = NULL;
+    QLabel       *DynamicScaleTipLabel = NULL;
 
 };
 
