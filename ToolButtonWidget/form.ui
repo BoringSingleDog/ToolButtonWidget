@@ -16,59 +16,10 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="0">
-      <widget class="QPushButton" name="pushButton">
+     <item row="2" column="0">
+      <widget class="QPushButton" name="pushButton_12">
        <property name="text">
-        <string>位状态指示灯</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="pushButton_2">
-       <property name="text">
-        <string>多状态指示灯</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="4">
-      <widget class="QPushButton" name="pushButton_5">
-       <property name="text">
-        <string>滑动开关</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QPushButton" name="pushButton_6">
-       <property name="text">
-        <string>位状态切换开关</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="pushButton_4">
-       <property name="text">
-        <string>多状态设置</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="pushButton_3">
-       <property name="text">
-        <string>位状态设置</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="3">
-      <widget class="QPushButton" name="pushButton_9">
-       <property name="text">
-        <string>复合式多功能按钮</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="2">
-      <widget class="QPushButton" name="pushButton_8">
-       <property name="text">
-        <string>功能键</string>
+        <string>数值</string>
        </property>
       </widget>
      </item>
@@ -76,6 +27,13 @@
       <widget class="QPushButton" name="pushButton_14">
        <property name="text">
         <string>字符</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QPushButton" name="pushButton_8">
+       <property name="text">
+        <string>功能键</string>
        </property>
       </widget>
      </item>
@@ -93,20 +51,6 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="0">
-      <widget class="QPushButton" name="pushButton_12">
-       <property name="text">
-        <string>数值</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="4">
-      <widget class="QPushButton" name="pushButton_20">
-       <property name="text">
-        <string>PLC控制</string>
-       </property>
-      </widget>
-     </item>
      <item row="2" column="2">
       <widget class="QPushButton" name="pushButton_16">
        <property name="text">
@@ -114,10 +58,10 @@
        </property>
       </widget>
      </item>
-     <item row="3" column="0">
-      <widget class="QPushButton" name="pushButton_15">
+     <item row="2" column="4">
+      <widget class="QPushButton" name="pushButton_20">
        <property name="text">
-        <string>嵌入窗口</string>
+        <string>PLC控制</string>
        </property>
       </widget>
      </item>
@@ -135,17 +79,24 @@
        </property>
       </widget>
      </item>
+     <item row="3" column="0">
+      <widget class="QPushButton" name="pushButton_15">
+       <property name="text">
+        <string>嵌入窗口</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="3">
+      <widget class="QPushButton" name="pushButton_19">
+       <property name="text">
+        <string>条形码</string>
+       </property>
+      </widget>
+     </item>
      <item row="4" column="2">
       <widget class="QPushButton" name="DataGroupBtn">
        <property name="text">
         <string>数据群组</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="2">
-      <widget class="QPushButton" name="pushButton_13">
-       <property name="text">
-        <string>媒体</string>
        </property>
       </widget>
      </item>
@@ -163,10 +114,10 @@
        </property>
       </widget>
      </item>
-     <item row="3" column="3">
-      <widget class="QPushButton" name="pushButton_19">
+     <item row="3" column="2">
+      <widget class="QPushButton" name="pushButton_13">
        <property name="text">
-        <string>条形码</string>
+        <string>媒体</string>
        </property>
       </widget>
      </item>
@@ -191,13 +142,6 @@
        </property>
       </widget>
      </item>
-     <item row="5" column="0">
-      <widget class="QPushButton" name="WatchNeedleBtn">
-       <property name="text">
-        <string>表针</string>
-       </property>
-      </widget>
-     </item>
      <item row="5" column="1">
       <widget class="QPushButton" name="DynamicPaint">
        <property name="text">
@@ -212,10 +156,94 @@
        </property>
       </widget>
      </item>
+     <item row="5" column="0">
+      <widget class="QPushButton" name="WatchNeedleBtn">
+       <property name="text">
+        <string>表针</string>
+       </property>
+      </widget>
+     </item>
      <item row="5" column="3">
       <widget class="QPushButton" name="pushButton_24">
        <property name="text">
         <string>PLC控制</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="4">
+      <widget class="QPushButton" name="pushButton_25">
+       <property name="text">
+        <string>间接窗口</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="pushButton">
+       <property name="text">
+        <string>位状态指示灯</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="pushButton_5">
+       <property name="text">
+        <string>滑动开关</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="pushButton_4">
+       <property name="text">
+        <string>多状态设置</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="pushButton_2">
+       <property name="text">
+        <string>多状态指示灯</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QPushButton" name="pushButton_6">
+       <property name="text">
+        <string>位状态切换开关</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="pushButton_3">
+       <property name="text">
+        <string>位状态设置</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="3">
+      <widget class="QPushButton" name="pushButton_9">
+       <property name="text">
+        <string>复合式多功能按钮</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="0">
+      <widget class="QPushButton" name="DirectWidget">
+       <property name="text">
+        <string>直接窗口</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <widget class="QPushButton" name="pushButton_26">
+       <property name="text">
+        <string>数据资料传输</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="2">
+      <widget class="QPushButton" name="pushButton_27">
+       <property name="text">
+        <string>资料传输背景</string>
        </property>
       </widget>
      </item>

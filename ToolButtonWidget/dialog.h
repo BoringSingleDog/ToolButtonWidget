@@ -12,6 +12,7 @@
 #include <QLabel>
 #include <QMouseEvent>
 #include <QCheckBox>
+#include <QListWidget>
 
 namespace Ui {
 class Dialog;
@@ -46,9 +47,14 @@ private:
     void initXYCurveImagePage();            //初始化XY曲线图
     void initWatchNeedlePage();             //初始化表针界面
     void initMoveGraphicalPage();           //初始化移动图形界面
+    void initIndirectWindowPage();          //初始化间接窗口界面
+    void initDirectWidgetPage();            //初始化直接窗口界面
+    void initDataTranportPage();            //初始化数据资料传输
+    void initDataTransBackground();         //初始化数据传输资料背景
 
     void establishConnectRelation(QCheckBox *checkbox , QWidget *widget);
     void showPLCControlWidget();
+    void showDataTransBackground();
 
 private slots:
     void doDealMenuAction();
@@ -56,6 +62,8 @@ private slots:
     void doBrushStyleSelect();
     void doBrushTableItemClicked(QTableWidgetItem* item);
     void doBrushItemClicked(int,int);
+    void doAddbuttonClicked();              //PLC控制界面新增按钮
+    void doShowDataTransBackground();
 
 
  protected:
@@ -126,6 +134,7 @@ private slots:
     void on_MoreInfomation2_clicked();
     void on_LimitValueFromRegister_stateChanged(int arg1);
     void on_LimitValueAddiDescBtn_clicked();
+    void on_UseWindowShift_stateChanged(int arg1);
 
 private:
     subDialog *subDlg = NULL;
@@ -203,6 +212,10 @@ private:
     QTableWidget *WatchNeedleFontColor;     //表针元件中的文字的颜色
     QLineEdit    *WatchNeedleFontLineEdit;
 
+
+    QListWidget *PLClistWidget = NULL;
+
+    QListWidget *TransBackground = NULL;    //资料传输背景
 
     QWidget      *DynamicScaleTipWidget = NULL;
     QLabel       *DynamicScaleTipLabel = NULL;

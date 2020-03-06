@@ -58,7 +58,7 @@ void subDialog::showSubDialog(subWidgetType type)
             break;
        case PLCControlSubWidget:
             this->setWindowTitle("PLC控制");
-            ui->AddrTagBaseBtn->hide();
+            initPLCControlSubPage();
             ui->stackedWidget->setCurrentIndex(7);
             break;
     }
@@ -75,6 +75,31 @@ void subDialog::getRotateParameter(int &ClockWise, int &startPos, int &endPos)
     else
         endPos = ui->endLineEdit->text().toInt();
     startPos = ui->startLineEdit->text().toInt();
+}
+
+//参数1：控制类型
+//参数2：是否勾选 【在指定窗口打开时才执行】； 0-勾选 1-未勾选
+//参数3：执行的命令编号
+//参数4：是否勾选【打开背光灯】 0-勾选，1-未勾选
+//参数5：是否勾选【地址清零】  0-勾选，1-未勾选
+//参数6：是否否选【窗口地址偏移】  0-勾选，1-未勾选
+//参数7：窗口地址偏移 ID,
+//参数8：设备类型； 0-local HMI ,1-MODBUS TCP/IP
+//参数9：设备地址：3x,4x,4x-Double
+//参数10：地址后紧跟的偏移地址数
+void subDialog::getPLCChooseResult(QString &windowType, int &isExecCom, int &commandID, int &useBackLight, int &addClear, int &useWindIDShift, int &windowIDShift, QString &devType, QString &AddrType, int &addrNumber)
+{
+    windowType = ui->ControlTypeCombox->currentText();
+    isExecCom = ui->ExecSpecialCommand->checkState();
+    commandID = ui->CommanderCombox->currentText().split(".").first().toInt();
+    useBackLight = ui->OpenBackGroundLight->checkState();
+    addClear = ui->ClearAddrValueAfterSwitchPage->checkState();
+    useWindIDShift = ui->UseWindowIDCheckBox->checkState();
+    windowIDShift = ui->windowIDCombox->currentText().toInt();
+    devType = ui->PLCAddrDevType->currentText();
+    AddrType = ui->PLCAddrTypeCombox->currentText();
+    addrNumber = ui->PLCADdrShiftLineEidt->text().toInt();
+
 }
 
 void subDialog::initWidgetControl()
@@ -136,6 +161,17 @@ void subDialog::initWatchNeedlePage()
     else
         ui->AddressSettingTips->hide();
 
+}
+
+void subDialog::initPLCControlSubPage()
+{
+    ui->CommanderCombox->hide();
+    ui->windowIDCombox->hide();
+    ui->AddrTagBaseBtn->hide();
+    for(int i = -1024;i<=1024;i++)
+    {
+        ui->windowIDCombox->addItem(QString::number(i));
+    }
 }
 
 void subDialog::on_wholeCircular_clicked(bool checked)
@@ -354,3 +390,20 @@ void subDialog::on_IndexRegisterCheckbox_2_stateChanged(int arg1)
         ui->WatchNeedleIndexCombox->hide();
     }
 }
+
+void subDialog::on_ExecSpecialCommand_stateChanged(int arg1)
+{
+    if(arg1 == 2)
+        ui->CommanderCombox->show();
+    else if (arg1 == 0)
+        ui->CommanderCombox->hide();
+}
+
+void subDialog::on_UseWindowIDCheckBox_stateChanged(int arg1)
+{
+    if(arg1 == 2)
+        ui->windowIDCombox->show();
+    else if(arg1 == 0)
+        ui->windowIDCombox->hide();
+}
+

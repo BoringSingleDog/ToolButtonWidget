@@ -21,10 +21,12 @@ public:
     void showSubDialog(subWidgetType type);
     void getRotateParameter(int &ClockWise,int &startPos,int &endPos);
     void setWidgetCaller(QString widgetName){widgetCaller = widgetName;}
+    void getPLCChooseResult(QString &windowType, int &isExecCom, int &commandID, int &useBackLight, int &addClear, int &useWindIDShift, int &windowIDShift, QString &devType, QString &AddrType, int &addrNumber);
 
 private:
     void initWidgetControl();
     void initWatchNeedlePage();
+    void initPLCControlSubPage();
 
 
 private slots:
@@ -36,7 +38,8 @@ private slots:
     void on_WatchNeedleSystemRegister_stateChanged(int arg1);
     void on_UserCustomTagCheckbox_stateChanged(int arg1);
     void on_IndexRegisterCheckbox_2_stateChanged(int arg1);
-
+    void on_ExecSpecialCommand_stateChanged(int arg1);
+    void on_UseWindowIDCheckBox_stateChanged(int arg1);
 protected:
     bool   eventFilter(QObject *obj, QEvent *ev);
 

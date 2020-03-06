@@ -140,3 +140,26 @@ void Form::on_pushButton_24_clicked()
 {
     m_dialog->showComfirm(PLCControlPage);
 }
+
+void Form::on_pushButton_25_clicked()
+{
+    m_dialog->showComfirm(IndirectWidgetPage);
+    m_dialog->show();
+}
+
+void Form::on_DirectWidget_clicked()
+{
+    m_dialog->showComfirm(DirectWidgetPage);
+    m_dialog->show();
+}
+
+void Form::on_pushButton_26_clicked()
+{
+    m_dialog->showComfirm(DataTransportPage);
+    m_dialog->show();
+}
+
+void Form::on_pushButton_27_clicked()
+{
+    m_dialog->showComfirm(DataTransportBackground);
+}

@@ -24,6 +24,10 @@ enum ToolButtonType
     DynamicPainttingPage,               //动态绘图
     MoveGrapgicalPage,                  //移动图形
     PLCControlPage,                     //PLC控制
+    IndirectWidgetPage,                 //间接窗口
+    DirectWidgetPage,                   //直接窗口
+    DataTransportPage,                  //数据传输窗口
+    DataTransportBackground,            //资料传输背景
 };
 
 

@@ -133,6 +133,24 @@ void Dialog::showComfirm(ToolButtonType widgetType)
     case PLCControlPage:
         showPLCControlWidget();
         break;
+    case IndirectWidgetPage:
+        setWindowTitle("新增 间接窗口 元件");
+        initIndirectWindowPage();
+        ui->generalProStack->setCurrentIndex(18);
+        break;
+     case DirectWidgetPage:
+        setWindowTitle("新增 直接窗口 元件");
+        initDirectWidgetPage();
+        ui->generalProStack->setCurrentIndex(19);
+        break;
+     case DataTransportPage:
+        setWindowTitle("新增 数据资料传输窗口 元件");
+        initDataTranportPage();
+        ui->generalProStack->setCurrentIndex(20);
+        break;
+     case DataTransportBackground:
+        showDataTransBackground();
+        break;
     }
 }
 
@@ -751,8 +769,39 @@ void Dialog::initMoveGraphicalPage()
 
     ui->XCoordinateTopLimit->setText("1023");
     ui->XCoordinateTopLimit->setValidator(new QIntValidator(0,1023));
-
     ui->XCoordinateBottomLimit->setText("0");
+}
+
+void Dialog::initIndirectWindowPage()
+{
+    ui->ShiftValueCombox->hide();
+    ui->ShiftValueLabel->hide();
+
+    for(int i= -1024;i<=1024;i++)
+        ui->ShiftValueCombox->addItem(QString::number(i));
+}
+
+void Dialog::initDirectWidgetPage()
+{
+    ui->PropertyPosWidget->hide();
+    establishConnectRelation(ui->AutoAdjustWindowSizeCheckBox,ui->PropertyPosWidget);
+
+}
+
+void Dialog::initDataTranportPage()
+{
+    ui->ConfigureSwitchSubWidget->hide();
+    ui->DataTransportAddrSubWidget->hide();
+    establishConnectRelation(ui->DataTransportEnableCheckBox,ui->ConfigureSwitchSubWidget);
+    establishConnectRelation(ui->DataTransportEnableCheckBox,ui->DataTransportAddrSubWidget);
+}
+
+void Dialog::initDataTransBackground()
+{
+    ui->ConfigureSwitchSubWidget_2->hide();
+    ui->DataTransportAddrSubWidget_2->hide();
+    establishConnectRelation(ui->DataTransportEnableCheckBox_2,ui->ConfigureSwitchSubWidget_2);
+    establishConnectRelation(ui->DataTransportEnableCheckBox_2,ui->DataTransportAddrSubWidget_2);
 }
 
 void Dialog::establishConnectRelation(QCheckBox *checkbox, QWidget *widget)
@@ -982,31 +1031,162 @@ void Dialog::doBrushItemClicked(int   row, int   column)
     qDebug()<<"鼠标点击的Item位于第 "<<row<<"  行，第 "<<column<<" 列";
 }
 
+void Dialog::doAddbuttonClicked()
+{
+    subDlg->setWidgetCaller("PLCControl");
+    subDlg->showSubDialog(PLCControlSubWidget);
+    subDlg->exec();
+
+    QString windowType = "";
+    int isExecCom = 0;
+    int commandID = 0;
+    int useBackLight =0;
+    int addClear = 0;
+    int useWindIDShift = 0;
+    int windowIDShift =0 ;
+    QString devType = "";
+    QString AddrType = "";
+    int addrNumber = -1;
+    subDlg->getPLCChooseResult(windowType,isExecCom,commandID,useBackLight,addClear,useWindIDShift,windowIDShift,devType,AddrType,addrNumber);
+
+    QString newItemText = "["+ devType+":"+AddrType+"-"+QString::number(addrNumber)+"] => "+windowType;
+
+    bool isLeft = false;
+    QString openLightStr = "";
+    if(useBackLight == 2)
+    {
+        openLightStr = "换页后打开背光灯 ,";
+        newItemText +="("+openLightStr;
+        isLeft = true;
+    }
+    else
+        openLightStr = "";
+
+    QString addrValueClearStr = "";
+    if(addClear == 2)
+    {
+        addrValueClearStr = "换页后地址数值清零 ";
+        if(isLeft)
+            newItemText += addrValueClearStr;
+        else
+            newItemText += "("+ addrValueClearStr;
+        isLeft = true;
+    }
+    else
+        addrValueClearStr = "";
+
+    if(isLeft)
+        newItemText +=")";
+
+    QString isExecComStr = "";
+    if(isExecCom == 2)
+    {
+        isExecComStr = "执行";
+        newItemText += "("+isExecComStr+":窗口"+QString::number(commandID)+")";
+    }
+    else
+        isExecComStr = "";
+
+    if(PLClistWidget!=NULL)
+    {
+         int itemCount = PLClistWidget->count();
+         PLClistWidget->addItem(QString::number(itemCount+1)+"："+newItemText);
+    }
+}
+
+void Dialog::doShowDataTransBackground()
+{
+    ui->generalProStack->setCurrentIndex(21);
+    initDataTransBackground();
+    this->show();
+}
+
 void Dialog::showPLCControlWidget()
 {
     qDebug()<<"进入到生成PLC控制界面";
  
-    QDialog *widget = new QDialog();
+    QDialog *widget = new QDialog(this);
+    widget->setFixedSize(QSize(900,600));
+    widget->setWindowTitle("PLC控制");
     QHBoxLayout *Hlayout = new QHBoxLayout;
     QVBoxLayout *Vlayout = new QVBoxLayout;
     
-    QListWidget *listWidget = new QListWidget(widget);
-    listWidget->addItem("1：[local HMI：LB-3] =>执行宏指令：[ID:001] test mode_com2_rs485_2w(OFF->ON)");
-    listWidget->addItem("2：[local HMI：LB-4] =>执行宏指令：[ID:002] test_mode_com2_rs485_4w(OFF->ON)");
-    listWidget->addItem("3：[local HMI：LB-2] =>执行宏指令：[ID:003] test_mode_com1_rs232(OFF->ON)");
-    listWidget->addItem("4：[local HMI：LB-10] =>执行宏指令：[ID:004] Beep(OFF->ON)");
-    listWidget->addItem("5：[local HMI：LB-301] =>执行宏指令：[ID:005] Memory _test(OFF->ON)");
-    listWidget->addItem("6：[local HMI：LB-302] =>执行宏指令：[ID:007] Run Memory Test Time(OFF->ON)");
-    listWidget->addItem("7：[local HMI：LB-303] =>背光灯控制(打开)");
-    listWidget->addItem("8：[local HMI：LB-600] =>执行宏指令：[ID:008] Static IP(OFF->ON))");
-    listWidget->addItem("9：[local HMI：LB-601] =>执行宏指令：[ID:009] DHCP(OFF->ON)");    
-    listWidget->addItem("10：[local HMI：LB-9] =>执行宏指令：[ID:010] test_Result(OFF->ON)");
-    listWidget->addItem("11：[local HMI：LB-6] =>执行宏指令：[ID:013] test_mode_com4_rs485_2w(OFF->ON)");
-    listWidget->addItem("12：[local HMI：LB-8] =>执行宏指令：[ID:014] test_mode_com3_rs232(OFF->ON)");
-    listWidget->addItem("13：[local HMI：LB-1109] =>背光灯控制(返回值)(关闭)(执行：窗口110)");
-    listWidget->addItem("14：[local HMI：LW-40] =>切换基本窗口(换页后地址数值归零)");
+    PLClistWidget = new QListWidget();
+    PLClistWidget->addItem("1：[local HMI：LB-3] =>执行宏指令：[ID:001] test mode_com2_rs485_2w(OFF->ON)");
+    PLClistWidget->addItem("2：[local HMI：LB-4] =>执行宏指令：[ID:002] test_mode_com2_rs485_4w(OFF->ON)");
+    PLClistWidget->addItem("3：[local HMI：LB-2] =>执行宏指令：[ID:003] test_mode_com1_rs232(OFF->ON)");
+    PLClistWidget->addItem("4：[local HMI：LB-10] =>执行宏指令：[ID:004] Beep(OFF->ON)");
+    PLClistWidget->addItem("5：[local HMI：LB-301] =>执行宏指令：[ID:005] Memory _test(OFF->ON)");
+    PLClistWidget->addItem("6：[local HMI：LB-302] =>执行宏指令：[ID:007] Run Memory Test Time(OFF->ON)");
+    PLClistWidget->addItem("7：[local HMI：LB-303] =>背光灯控制(打开)");
+    PLClistWidget->addItem("8：[local HMI：LB-600] =>执行宏指令：[ID:008] Static IP(OFF->ON))");
+    PLClistWidget->addItem("9：[local HMI：LB-601] =>执行宏指令：[ID:009] DHCP(OFF->ON)");
+    PLClistWidget->addItem("10：[local HMI：LB-9] =>执行宏指令：[ID:010] test_Result(OFF->ON)");
+    PLClistWidget->addItem("11：[local HMI：LB-6] =>执行宏指令：[ID:013] test_mode_com4_rs485_2w(OFF->ON)");
+    PLClistWidget->addItem("12：[local HMI：LB-8] =>执行宏指令：[ID:014] test_mode_com3_rs232(OFF->ON)");
+    PLClistWidget->addItem("13：[local HMI：LB-1109] =>背光灯控制(返回值)(关闭)(执行：窗口110)");
+    PLClistWidget->addItem("14：[local HMI：LW-40] =>切换基本窗口(换页后地址数值归零)");
 
-    widget->exec();
+    //新增 、设置、删除  关闭
+
+    QPushButton *addButton = new QPushButton("新增");
+    QPushButton *SettingButton = new QPushButton("设置");
+    QPushButton *deleteButton = new QPushButton("删除");
+    QPushButton *closeButton = new QPushButton("关闭");
+
+    connect(closeButton,SIGNAL(clicked()),widget,SLOT(close()));
+    connect(addButton,&QPushButton::clicked,this,&Dialog::doAddbuttonClicked);
+
+
+    Hlayout->addWidget(addButton);
+    Hlayout->addWidget(SettingButton);
+    Hlayout->addWidget(deleteButton);
+    Hlayout->addStretch();
+    Hlayout->addWidget(closeButton);
+
+    Vlayout->addWidget(PLClistWidget);
+    Vlayout->addLayout(Hlayout);
+
+    widget->setLayout(Vlayout);
+    widget->show();
+}
+
+void Dialog::showDataTransBackground()
+{
+
+    QWidget *dialog = new QWidget();
+    dialog->setWindowTitle("资料传输(背景)");
+    dialog->setFixedSize(QSize(700,600));
+    TransBackground = new QListWidget();
+    TransBackground->addItem("1：[local HMI：RW-300]->[local HMI:RW-300],模式：字，频率=3.0秒，传输数据大小=1字");
+
+    QHBoxLayout *hLayout = new QHBoxLayout();
+    QVBoxLayout *vLayout = new QVBoxLayout();
+
+    QTabWidget  *tabWidget = new QTabWidget();
+    tabWidget->addTab(TransBackground,"定时式");
+
+    QPushButton *addButton = new QPushButton("新增");
+    QPushButton *deleteButton = new QPushButton("删除");
+    QPushButton *settingButton = new QPushButton("设置");
+    QPushButton *closeButton = new QPushButton("关闭");
+
+
+    connect(closeButton,&QPushButton::clicked,dialog,&QDialog::close);
+    connect(addButton,&QPushButton::clicked,this,&Dialog::doShowDataTransBackground);
+
+
+    hLayout->addWidget(addButton);
+    hLayout->addWidget(deleteButton);
+    hLayout->addWidget(settingButton);
+    hLayout->addStretch();
+    hLayout->addWidget(closeButton);
+
+    vLayout->addWidget(tabWidget);
+    vLayout->addLayout(hLayout);
+
+    dialog->setLayout(vLayout);
+    dialog->show();
 }
 
 bool Dialog::eventFilter(QObject *obj, QEvent *event)
@@ -1594,4 +1774,19 @@ void Dialog::on_LimitValueAddiDescBtn_clicked()
     subDlg->setWidgetCaller("MoveGraph");
     subDlg->showSubDialog(MoveGraphLimitValueDesc);
     subDlg->show();
+}
+
+void Dialog::on_UseWindowShift_stateChanged(int arg1)
+{
+    if(arg1 == 2)
+    {
+        ui->ShiftValueLabel->show();
+        ui->ShiftValueCombox->show();
+    }
+    else if(arg1 == 0)
+    {
+        ui->ShiftValueLabel->hide();
+        ui->ShiftValueCombox->hide();
+    }
+
 }
