@@ -18,7 +18,6 @@ Widget::~Widget()
 {
 
 }
-
 void Widget::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);

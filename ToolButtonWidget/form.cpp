@@ -7,7 +7,7 @@ Form::Form(QWidget *parent) :
     ui(new Ui::Form)
 {
     ui->setupUi(this);
-    m_dialog = new Dialog;
+    m_dialog = new Dialog(this);
 }
 
 Form::~Form()
@@ -149,8 +149,7 @@ void Form::on_pushButton_25_clicked()
 
 void Form::on_DirectWidget_clicked()
 {
-    m_dialog->showComfirm(DirectWidgetPage);
-    m_dialog->show();
+
 }
 
 void Form::on_pushButton_26_clicked()
@@ -162,4 +161,51 @@ void Form::on_pushButton_26_clicked()
 void Form::on_pushButton_27_clicked()
 {
     m_dialog->showComfirm(DataTransportBackground);
+}
+
+void Form::on_pushButton_28_clicked()
+{
+    m_dialog->showComfirm(PhotoCheckPage);
+    m_dialog->show();
+}
+
+void Form::on_pushButton_29_clicked()
+{
+    m_dialog->showComfirm(VNCViewerPage);
+    m_dialog->show();
+}
+
+void Form::on_pushButton_30_clicked()
+{
+    m_dialog->showComfirm(QRCodePage);
+    m_dialog->show();
+}
+
+void Form::on_pushButton_31_clicked()
+{
+    m_dialog->showComfirm(WeChatQRCodePage);
+    m_dialog->show();
+}
+
+void Form::on_pushButton_32_clicked()
+{
+    m_dialog->showComfirm(DateAndTimePage);
+    m_dialog->show();
+}
+
+void Form::on_pushButton_33_clicked()
+{
+    m_dialog->showComfirm(TimerControlPage);
+    m_dialog->show();
+}
+
+void Form::on_pushButton_34_clicked()
+{
+    m_dialog->showComfirm(ScheduleControlPage);
+}
+
+void Form::on_pushButton_35_clicked()
+{
+    m_dialog->showComfirm(SystemParamterPage);
+    m_dialog->show();
 }

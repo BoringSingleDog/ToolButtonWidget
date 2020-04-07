@@ -17,17 +17,23 @@ SOURCES += main.cpp\
     form.cpp \
     subDialog.cpp \
     widget.cpp \
-    BtnWidget.cpp
+    BtnWidget.cpp \
+    Button.cpp \
+    ConfigDialog.cpp
 
 HEADERS  += dialog.h \
     datatype.h \
     form.h \
     subDialog.h \
     widget.h \
-    BtnWidget.h
+    BtnWidget.h \
+    Button.h \
+    CustomDelegate.h \
+    ConfigDialog.h
 
 FORMS    += dialog.ui \
     form.ui \
     subDialog.ui \
     widget.ui \
-    BtnWidget.ui
+    BtnWidget.ui \
+    ConfigDialog.ui

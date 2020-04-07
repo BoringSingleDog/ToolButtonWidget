@@ -52,19 +52,18 @@ class Widget : public QWidget
 
 public:
     explicit Widget(QWidget *parent = 0);
+     ~Widget();
+    int  getWindowBrushStyle(){return brushStyle;}
 
-
-    int  getWindowBrushStyle(){return brushStyle;};
-
-    void setWindowBrushStyle(CustomBrushStyle type){brushStyle = type;};        //窗体的画刷风格
-    void setWidgetbackgroundColor(QColor color){BackgroundColor = color;};      //窗体的背景颜色
-    void setWidgetBrushColor(QColor color){brushColor = color;};
-    void setWidgetPartternBorderColor(QString borderColor){PartternBorderColor = borderColor;};                    //图形变宽的背景颜色
-    void setWidgetRingTextColor(QString color){WholeRingTextColor = color;};         //所有圆环文字对应的颜色
-    void setWidgetRingTextColor(int index,QString color){TextColorMap.insert(index,color);};    //某一部分圆环文字对应的颜色
-    void setWidgetRingCount(int count){ChannelCount = count;};                   //圆环非等分数量
-    void setWidgetRingColor(int index,QString color){ColorMap.insert(index,color);};       //设置对应通道的颜色
-    void setWidgetSubRingRadius(int radius){SubCenterRingRadius = radius;};                //中心圆环的半径大小
+    void setWindowBrushStyle(CustomBrushStyle type){brushStyle = type;}       //窗体的画刷风格
+    void setWidgetbackgroundColor(QColor color){BackgroundColor = color;}      //窗体的背景颜色
+    void setWidgetBrushColor(QColor color){brushColor = color;}
+    void setWidgetPartternBorderColor(QString borderColor){PartternBorderColor = borderColor;}                    //图形变宽的背景颜色
+    void setWidgetRingTextColor(QString color){WholeRingTextColor = color;}         //所有圆环文字对应的颜色
+    void setWidgetRingTextColor(int index,QString color){TextColorMap.insert(index,color);}    //某一部分圆环文字对应的颜色
+    void setWidgetRingCount(int count){ChannelCount = count;}                   //圆环非等分数量
+    void setWidgetRingColor(int index,QString color){ColorMap.insert(index,color);}       //设置对应通道的颜色
+    void setWidgetSubRingRadius(int radius){SubCenterRingRadius = radius;}                //中心圆环的半径大小
     void setWidgetRingTextProperty(QString fontName,int fontSize,QString textShowStyle)        //设置扇形图的文字属性
     {
         RingTextFontName = fontName;
@@ -77,16 +76,12 @@ public:
         RingDrawEndPos = endPos;
         RingDrawDirection = direction;
     }
-    void setDrawParttern(int type){partternType = type;};
+    void setDrawParttern(int type){partternType = type;}
 
-
-
-
-
-    ~Widget();
 
 protected:
     void paintEvent(QPaintEvent *event);
+
 
 private:
     void initBrushWidget();
@@ -106,6 +101,7 @@ private:
 
 private:
     Ui::Widget *ui;
+
     QBrush brush;
     CustomBrushStyle brushStyle;
     QColor BackgroundColor;             //窗体背景色
@@ -127,6 +123,7 @@ private:
     QColor brushPointColor = Qt::white; //绘制样式的像素点的颜色
     QColor brushColor = Qt::black;
     int partternType;
+
 };
 
 #endif // WIDGET_H
